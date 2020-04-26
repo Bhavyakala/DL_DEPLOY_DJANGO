@@ -5,7 +5,10 @@ from django.db import models
 # Register your models here.
 class TutorialAdmin(admin.ModelAdmin) :
     fieldsets = [ ("title/date",{"fields" : ["tutorial_title", "tutorial_published"]}),
-                   ("content", {"fields" : ["tutorial_content"]}) ]      
+                   ("URL", {"fields" : ["tutorial_slug"]}),
+                   ("Series", {"fields" : ["tutorial_series"]}),
+                   ("content", {"fields" : ["tutorial_content"]}), ]      
+                          
 
     formfield_overrides = {
         models.TextField: {'widget' : TinyMCE()}
