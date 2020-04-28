@@ -19,7 +19,9 @@ def upload_image(request) :
             inf.caption = get_prediction(image)
             inf.save()
             messages.info(request,f"upload success")
-            return render(request = request, template_name="main/caption-generator.html", context={"form" : uploadForm , "caption" : inf.caption})            
+            return render(request = request, template_name="main/caption-generator.html", context={"form" : uploadForm , 
+                                                                                                   "caption" : inf.caption,
+                                                                                                   "image" : inf.image})            
         else :
             messages.info(request,f"upload not success")
             return render(request = request, template_name="main/caption-generator.html", context={"form" : uploadForm})

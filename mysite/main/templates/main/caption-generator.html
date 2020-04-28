@@ -2,13 +2,18 @@
 {% extends "main/header.html" %}
 {% block content%}
 <div class="container center-align">
-    <form method="POST" enctype="multipart/form-data"> 
+    <form method="POST" enctype="multipart/form-data" class="card  accent-5 hoverable"> 
         {% csrf_token %}
-        {{form.as_p}}
-        {% if caption != None %}
-            <p>{{caption}}</p>
-        {% endif %}
-        <input type="submit" class="btn-small">
+        <div class="card-panel">
+            {{form.as_p}}
+            <input type="submit" class="btn caret">
+        </div>
     </form>
+    <div class='card z-depth-4'>
+        {% if caption != None %}
+            <img src="{{image.url}}" class='responsive-img materialboxed ' alt="img">
+            <p class="materialize-textarea card-content">{{caption}}</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
