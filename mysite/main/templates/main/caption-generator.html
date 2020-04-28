@@ -1,0 +1,14 @@
+
+{% extends "main/header.html" %}
+{% block content%}
+<div class="container center-align">
+    <form method="POST" enctype="multipart/form-data"> 
+        {% csrf_token %}
+        {{form.as_p}}
+        {% if caption != None %}
+            <p>{{caption}}</p>
+        {% endif %}
+        <input type="submit" class="btn-small">
+    </form>
+</div>
+{% endblock %}

@@ -20,5 +20,6 @@ urlpatterns = [
     path('', include('main.urls')),
     path('admin/', admin.site.urls),
     path('tinymce/', include('tinymce.urls')),
+    path('image_caption/',include("image_caption.urls"))
     
 ]

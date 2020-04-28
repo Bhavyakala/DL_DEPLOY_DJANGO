@@ -42,3 +42,8 @@ class Tutorial(models.Model):
     # converts objects to strings so they can be passed more easily to HTML
     def __str__(self):
         return self.tutorial_title
+
+class Inference(models.Model) :
+    
+    image = models.ImageField(null=True)
+    prediction = models.CharField(max_length=200)
