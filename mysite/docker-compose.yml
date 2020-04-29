@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "python3 ./manage.py runserver 0.0.0.0:8000"
+    container_name: DL_deploy_django
+    ports:
+      - "8000:8000"
