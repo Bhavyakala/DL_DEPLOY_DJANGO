@@ -1,29 +1,31 @@
 import numpy as np
 import json
+import cv2
 # from keras.applications.inception_v3 import InceptionV3,preprocess_input
 # from keras.applications.vgg16 import VGG16,preprocess_input
 # from keras.applications.vgg19 import VGG19,preprocess_input
-from keras.applications.xception import Xception,preprocess_input
+from tensorflow.keras.applications.xception import Xception,preprocess_input
 # from keras.applications.resnet50 import ResNet50,preprocess_input
-from keras.models import Model, load_model
-from keras.preprocessing.image import load_img,img_to_array
-from keras.preprocessing.sequence import pad_sequences
-from keras.utils import to_categorical
+from tensorflow.keras.models import Model, load_model
+from tensorflow.keras.preprocessing.image import load_img,img_to_array
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.preprocessing import sequence
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from keras.preprocessing import sequence
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-tf.keras.backend.set_session(tf.Session(config=config))
+configuration = tf.compat.v1.ConfigProto()
+configuration.gpu_options.allow_growth = True
+session = tf.compat.v1.Session(config=configuration)
 import os
 base_dir = os.path.dirname(os.path.realpath(__file__))
 
-def single_feature_extract(filename) :
+def single_feature_extract(imageArray) :
         model = Xception()
         # model = ResNet50(weights='imagenet')
         model.layers.pop()
-        model = Model(input=model.inputs, outputs=model.layers[-1].output)
-        image = load_img(filename,target_size=(model.input_shape[1],model.input_shape[2]))
+        model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
+        image = cv2.resize(imageArray,((model.input_shape[1],model.input_shape[2])))
+        # image = load_img(filename,target_size=(model.input_shape[1],model.input_shape[2]))
         image = img_to_array(image)
         image = np.expand_dims(image,axis=0)
         image = preprocess_input(image)
@@ -108,14 +110,14 @@ def beam_search(loaded_model,image,max_len,beam_index = 3):
     return final_caption
 
 
-def run_inference(model_path, mode, imagefile) :
+def run_inference(model_path, mode, imageArray) :
     loaded_model = load_model(model_path)
     if mode==1:
-        description = greedy_search(loaded_model, imagefile, 34)
+        description = greedy_search(loaded_model, imageArray, 34)
     elif mode==2 :
-        description = beam_search(loaded_model, imagefile, 34)
-    im = plt.imread(imagefile)
-    plt.imshow(im) 
-    plt.xlabel(description)  
+        description = beam_search(loaded_model, imageArray, 34)
+    # im = plt.imread(imagefile)
+    # plt.imshow(im) 
+    # plt.xlabel(description)  
     return description
          
